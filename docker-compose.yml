@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  server:
+    container_name: server
+    build: .
+    command: python main.py
+    ports:
+      - '8080:8080'
+    environment:
+      MYSQL_HOST: db
+      REDIS_LOCAL_HOST: redis
+      HOST: '0.0.0.0'
+    depends_on:
+      - db
+      - redis
+    links:
+      - db
+      - redis
+
+  db:
+    container_name: db
+    image: mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: 'mysql'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    restart: always
+    volumes:
+      - ./docker_db:/var/lib/mysql
+
+  redis:
+    container_name: redis
+    image: redis
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - '6379:6379'

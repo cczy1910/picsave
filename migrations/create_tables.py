@@ -1,0 +1,7 @@
+IMAGES_QUERY = '''
+CREATE TABLE IF NOT EXISTS images (
+    p_hash VARCHAR(100) PRIMARY KEY,
+    avg_hash VARCHAR(100) UNIQUE,
+    image LONGBLOB NOT NULL
+);
+'''
